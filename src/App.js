@@ -13,10 +13,8 @@ function App() {
 
   //Derived data
   const filteredResults = searchResults.filter(
-  (track) => !playlist.some(
-    (playlistTrack) => playlistTrack.id === track.id
-  )
-);
+    (track) => !playlist.some((playlistTrack) => playlistTrack.id === track.id),
+  );
 
   //Function to handle saving the playlist
   const handleSave = async () => {
@@ -48,14 +46,12 @@ function App() {
     setSearchResults(results);
   };
 
-
   //Render the user interface with SearchBar, SearchResults, and Playlist components
   return (
     <div className="Container">
       <h1>Spotify Playlist Jammming</h1>
       <SearchBar onSearch={search} />
       <SearchResults
-        results={searchResults}
         addToPlaylist={addToPlaylist}
         playlist={playlist}
         results={filteredResults}
