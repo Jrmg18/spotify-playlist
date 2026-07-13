@@ -6,10 +6,19 @@ import Playlist from "./Components/Playlist/Playlist";
 import Spotify from "./Spotify";
 
 function App() {
+  //state variables for playlist, playlist name, and search results
   const [playlist, setPlaylist] = useState([]);
   const [playlistName, setPlaylistName] = useState("My Playlist");
   const [searchResults, setSearchResults] = useState([]);
 
+  //Derived data
+  const filteredResults = searchResults.filter(
+  (track) => !playlist.some(
+    (playlistTrack) => playlistTrack.id === track.id
+  )
+);
+
+  //Function to handle saving the playlist
   const handleSave = async () => {
     const trackUris = playlist.map((track) => track.uri);
 
@@ -21,6 +30,7 @@ function App() {
     setPlaylistName("My Playlist");
   };
 
+  //Functions to add and remove tracks from the playlist
   const addToPlaylist = (track) => {
     if (!playlist.some((t) => t.id === track.id)) {
       setPlaylist([...playlist, track]);
@@ -31,12 +41,15 @@ function App() {
     setPlaylist(playlist.filter((t) => t.id !== track.id));
   };
 
+  //Function to search Spotify and update the search results
   const search = async (term) => {
     console.log("Searching for:", term); // Add this line
     const results = await Spotify.search(term);
     setSearchResults(results);
   };
 
+
+  //Render the user interface with SearchBar, SearchResults, and Playlist components
   return (
     <div className="Container">
       <h1>Spotify Playlist Jammming</h1>
@@ -45,6 +58,7 @@ function App() {
         results={searchResults}
         addToPlaylist={addToPlaylist}
         playlist={playlist}
+        results={filteredResults}
       />
       <Playlist
         playlist={playlist}
